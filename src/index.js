@@ -1,42 +1,23 @@
-import React, { useState, useEffect } from "react";
+import "./index.css";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Home from "./views/Home.js";
+import Details from "./views/Details.js";
+import Episode from "./views/Episode.js";
 import ReactDOM from 'react-dom/client';
-import './index.css';
 
-
-let gitHubUrl='https://itunes.apple.com/us/rss/toppodcasts/limit=100/genre=1310/json';
-function App() {
-      const [userData, setUserData] = useState([]);
-
-      useEffect(() => {
-        getGitHubUserWithFetch();
-      }, []);
-
-     
-      const getGitHubUserWithFetch = async () => {
-        const response = await fetch(gitHubUrl);
-        const jsonData = await response.json();
-        setUserData(jsonData.feed);
-        
-      };
-
-      
-      return (
-        <div className="App">
-          <header className="App-header">
-            <h2>Podcasts list</h2>
-          </header>
-          {
-          	console.log(userData)
-          	
-          }
-        </div>
-      );
-    }
-
-    
-
-
-// ========================================
-
+export default function App() {
+  return (
+    <div className="App">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/podcast/:id" element={<Details />} />
+          <Route path="/podcast/:id/episode/:episodeId" element={<Episode />} />
+          <Route render={() => <h1>Not found!</h1>} />
+        </Routes>
+      </BrowserRouter>
+    </div>
+  );
+}
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<App />);
