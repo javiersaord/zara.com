@@ -1,8 +1,10 @@
 import React from "react";
-import ReactDOM from 'react-dom/client';
+import { Link,Switch  } from "react-router-dom";
+
 
 
 class Home extends React.Component {
+
   constructor(props) {
     super(props);
       this.state = {
@@ -12,6 +14,7 @@ class Home extends React.Component {
   } 
 
   componentDidMount() {
+
     fetch("https://itunes.apple.com/us/rss/toppodcasts/limit=100/genre=1310/json").then((res) => res.json()).then((json) => {
       this.setState({
         items: json,
@@ -26,15 +29,19 @@ class Home extends React.Component {
       <h1> Pleases wait some time.... </h1> </div> ;
     return (
       <div className = "App">
-      <h1 className="main-title"> Podcaster </h1>
+      <h1 className="main-title"> <Link to="/">Podcaster</Link> </h1>
       {items.feed.entry.map((item) => (
-        <div key={item.id.attributes['im:id']} className="layoutPodcast">
+        <Link to={`/podcast/${item.id.attributes['im:id']}` } key={item.id.attributes['im:id']} state={
+                item.id.attributes['im:id']}>
+        <div className="layoutPodcast">
           <div className="layoutImage"><img src={item['im:image'][1].label} alt="iTunes"/></div>
           <div className="layoutName">{item['im:name'].label}</div>
           <div className="layoutAuthor">Author: {item['im:artist'].label}</div>
         </div>
-
+        </Link>
+        
         ))}
+        
       </div>
     );
 }
